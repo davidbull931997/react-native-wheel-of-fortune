@@ -72,6 +72,8 @@ class WheelOfFortune extends React.Component {
     this.numberOfSegments = this.RewardCount;
 
     this.winner = prevProps.winner ? prevProps.winner : Math.floor(Math.random() * this.numberOfSegments);
+
+    return null;
   }
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
