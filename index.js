@@ -133,8 +133,6 @@ class WheelOfFortune extends React.Component {
 
     const toValue = 365 - ((this.winner) * (this.oneTurn / this.numberOfSegments)) + (360 * (duration / 1000));
 
-    console.log(toValue);
-
     Animated.timing(this._angle, {
       toValue,
       duration,
