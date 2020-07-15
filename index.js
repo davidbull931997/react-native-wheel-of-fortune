@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   Animated,
   TouchableOpacity,
   Image as RNImage,
-} from "react-native";
+} from 'react-native';
 import * as d3Shape from 'd3-shape';
 
 import Svg, {
@@ -27,7 +28,7 @@ const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const { width, height } = Dimensions.get('screen');
 
 
-class WheelOfFortune extends Component {
+class WheelOfFortune extends React.Component {
 
 
   constructor(props) {
@@ -74,7 +75,7 @@ class WheelOfFortune extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
-    
+
   }
 
   componentDidMount() {
@@ -93,13 +94,13 @@ class WheelOfFortune extends Component {
   makeWheel = () => {
     const data = Array.from({ length: this.numberOfSegments }).fill(1);
     const arcs = d3Shape.pie()(data);
-    var colors = this.props.colors ? this.props.colors : ['#E07026', '#E8C22E', '#ABC937', '#4F991D', '#22AFD3', '#5858D0', '#7B48C8', '#D843B9', '#E23B80', '#D82B2B'];
+    const { colors, innerRadius } = this.props;
     return arcs.map((arc, index) => {
       const instance = d3Shape
         .arc()
         .padAngle(0.01)
         .outerRadius(width / 2)
-        .innerRadius(this.props.innerRadius || 100);
+        .innerRadius(innerRadius);
       return {
         path: instance(arc),
         color: colors[index % colors.length],
@@ -122,7 +123,7 @@ class WheelOfFortune extends Component {
 
   _onPress = () => {
 
-    const duration = this.props.duration || 10000;
+    const { duration } = this.props;
 
     this.setState({
       started: true
@@ -134,7 +135,7 @@ class WheelOfFortune extends Component {
 
     Animated.timing(this._angle, {
       toValue,
-      duration: duration,
+      duration,
       useNativeDriver: true
     }).start(() => {
       const winnerIndex = this._getwinnerIndex();
@@ -147,32 +148,38 @@ class WheelOfFortune extends Component {
 
   };
 
-  _textRender = (x, y, value, size, i) => (
-    <SvgText
-      x={x}
-      y={y - 70}
-      fill={this.props.textColor ? this.props.textColor : '#fff'}
-      textAnchor="middle"
-      fontSize={this.fontSize}
-    >
-      {Array.from({ length: number.length }).map((_, j) => {
-        return (
-          <TSpan
-            x={x}
-            dy={this.fontSize}
-            key={`arc-${i}-slice-${j}`}
-          >
+  _textRender = (x, y, value, size, i) => {
+    const { textColor } = this.props;
 
-            {number.charAt(j)}
-          </TSpan>
-        );
-      })}
-    </SvgText>
-  )
+    return (
+      <SvgText
+        x={x}
+        y={y - 70}
+        fill={textColor}
+        textAnchor="middle"
+        fontSize={this.fontSize}
+      >
+        {Array.from({ length: number.length }).map((_, j) => {
+          return (
+            <TSpan
+              x={x}
+              dy={this.fontSize}
+              key={`arc-${i}-slice-${j}`}
+            >
+
+              {number.charAt(j)}
+            </TSpan>
+          );
+        })}
+      </SvgText>
+    )
+  }
 
 
 
   _renderSvgWheel = () => {
+    const { textColor, borderColor, borderWidth, backgroundColor } = this.props;
+
     return (
       <View style={styles.container}>
         {this._renderKnob()}
@@ -189,12 +196,12 @@ class WheelOfFortune extends Component {
               },
 
             ],
-            backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : '#fff',
+            backgroundColor,
             width: width - 20,
             height: width - 20,
             borderRadius: (width - 20) / 2,
-            borderWidth: this.props.borderWidth ? this.props.borderWidth : 2,
-            borderColor: this.props.borderColor ? this.props.borderColor : '#fff',
+            borderWidth,
+            borderColor,
             opacity: this.state.wheelOpacity
           }}
         >
@@ -223,7 +230,7 @@ class WheelOfFortune extends Component {
                       <SvgText
                         x={x}
                         y={y - 50}
-                        fill={this.props.textColor ? this.props.textColor : '#fff'}
+                        fill={textColor}
                         textAnchor="middle"
                         fontSize={this.fontSize}
                       >
@@ -253,7 +260,7 @@ class WheelOfFortune extends Component {
 
 
   _renderKnob = () => {
-    const knobSize = this.props.knobSize ? this.props.knobSize : 20;
+    const { knobSize, knoobSource } = this.props;
     // [0, this.numberOfSegments]
     const YOLO = Animated.modulo(
       Animated.divide(
@@ -288,7 +295,7 @@ class WheelOfFortune extends Component {
           style={{ transform: [{ translateY: 8 }] }}
         >
           <RNImage
-            source={this.props.knoobSource ? this.props.knoobSource : require('../assets/images/knoob.png')}
+            source={knoobSource}
             style={{ width: knobSize, height: (knobSize * 100) / 57 }}
           />
         </Svg>
@@ -297,7 +304,9 @@ class WheelOfFortune extends Component {
   };
 
   _renderTopToPlay() {
+
     if (this.state.started == false) {
+      const { startText } = this.props;
       if (this.props.playButton) {
         return (
           <TouchableOpacity onPress={() => this._onPress()}>
@@ -308,7 +317,7 @@ class WheelOfFortune extends Component {
         return (
           <View style={styles.modal}>
             <TouchableOpacity onPress={() => this._onPress()}>
-              <RNText style={styles.startText}>{this.props.startText ? this.props.startText : "TAPTOPLAY"}</RNText>
+              <RNText style={styles.startText}>{startText}</RNText>
             </TouchableOpacity>
           </View>
         );
@@ -331,6 +340,39 @@ class WheelOfFortune extends Component {
     );
   }
 }
+
+WheelOfFortune.propTypes = {
+  rewards: PropTypes.instanceOf(Array).isRequired,
+  getWinner: PropTypes.func.isRequired,
+  winner: PropTypes.number,
+  duration: PropTypes.number,
+  colors: PropTypes.instanceOf(Array),
+  backgroundColor: PropTypes.string,
+  borderWidth: PropTypes.number,
+  knobSize: PropTypes.number,
+  borderColor: PropTypes.string,
+  textColor: PropTypes.string,
+  knoobSource: PropTypes.number,
+  innerRadius: PropTypes.number,
+  playButton: PropTypes.func,
+  startText: PropTypes.string,
+}
+
+WheelOfFortune.defaultProps = {
+  winner: null,
+  duration: 10000,
+  backgroundColor: '#FFFFFF',
+  borderWidth: 2,
+  knobSize: 20,
+  borderColor: '#FFFFFF',
+  textColor: '#FFFFFF',
+  knoobSource: require('../assets/images/knoob.png'),
+  playButton: null,
+  startText: 'TAPTOPLAY',
+  innerRadius: 100,
+  colors: ['#E07026', '#E8C22E', '#ABC937', '#4F991D', '#22AFD3', '#5858D0', '#7B48C8', '#D843B9', '#E23B80', '#D82B2B'],
+};
+
 export default WheelOfFortune;
 
 const styles = StyleSheet.create({
