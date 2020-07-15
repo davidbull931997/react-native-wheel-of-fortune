@@ -366,7 +366,7 @@ WheelOfFortune.defaultProps = {
   knobSize: 20,
   borderColor: '#FFFFFF',
   textColor: '#FFFFFF',
-  knoobSource: require('../assets/images/knoob.png'),
+  knoobSource: require('./assets/images/knoob.png'),
   playButton: null,
   startText: 'TAPTOPLAY',
   innerRadius: 100,
