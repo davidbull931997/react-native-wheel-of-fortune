@@ -340,11 +340,11 @@ class WheelOfFortune extends React.Component {
       <View style={styles.container}>
 
         { /** SVG WHEEL  */}
-        <TouchableOpacity style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }}>
           <Animated.View style={[styles.content, { padding: 10 }]}>
             {this._renderSvgWheel()}
           </Animated.View>
-        </TouchableOpacity>
+        </View>
 
       </View>
     );
