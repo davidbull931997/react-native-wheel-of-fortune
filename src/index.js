@@ -61,6 +61,8 @@ class WheelOfFortune extends Component {
 
   }
 
+  willreve
+
   getSnapshotBeforeUpdate = (prevProps, prevState) => {
     this.Rewards = prevProps.rewards;
 
@@ -69,6 +71,10 @@ class WheelOfFortune extends Component {
     this.numberOfSegments = this.RewardCount;
 
     this.winner = prevProps.winner ? prevProps.winner : Math.floor(Math.random() * this.numberOfSegments);
+  }
+
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    
   }
 
   componentDidMount() {
