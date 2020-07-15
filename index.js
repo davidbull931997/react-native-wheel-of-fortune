@@ -60,27 +60,27 @@ class WheelOfFortune extends React.Component {
 
   }
 
-  getSnapshotBeforeUpdate = (prevProps, prevState) => {
-    this.Rewards = prevProps.rewards;
+  // getSnapshotBeforeUpdate = (prevProps, prevState) => {
+  //   this.Rewards = prevProps.rewards;
 
-    this.RewardCount = this.Rewards.length;
+  //   this.RewardCount = this.Rewards.length;
 
-    this.numberOfSegments = this.RewardCount;
+  //   this.numberOfSegments = this.RewardCount;
 
-    this.angleBySegment = this.oneTurn / this.numberOfSegments;
+  //   this.angleBySegment = this.oneTurn / this.numberOfSegments;
 
-    this.angleOffset = this.angleBySegment / 2;
+  //   this.angleOffset = this.angleBySegment / 2;
 
-    this.winner = prevProps.winner ? prevProps.winner : Math.floor(Math.random() * this.numberOfSegments);
+  //   this.winner = prevProps.winner ? prevProps.winner : Math.floor(Math.random() * this.numberOfSegments);
 
-    this._wheelPaths = this.makeWheel();
+  //   this._wheelPaths = this.makeWheel();
 
-    return null;
-  }
+  //   return null;
+  // }
 
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
+  // componentDidUpdate = (prevProps, prevState, snapshot) => {
 
-  }
+  // }
 
   componentDidMount() {
     this._angle.addListener(event => {
@@ -129,11 +129,23 @@ class WheelOfFortune extends React.Component {
 
     const { duration } = this.props;
 
-    this.setState({
-      started: true
-    })
+    this.setState({ started: true });
 
-    const toValue = 365 - ((this.winner) * (this.oneTurn / this.numberOfSegments)) + (360 * (duration / 1000));
+    const durationAsSecond = duration / 1000;
+
+    const degPerSegment = (this.oneTurn / this.numberOfSegments);
+
+    const totalDeg = 360 * durationAsSecond;
+
+    this.winner = Math.floor(Math.random() * this.numberOfSegments);
+
+    const winnerDeg = this.winner * degPerSegment;
+
+    let toValue = 365 - winnerDeg + totalDeg;
+
+    toValue /= 1000;
+
+    toValue += this._angle._value;
 
     Animated.timing(this._angle, {
       toValue,
@@ -190,11 +202,10 @@ class WheelOfFortune extends React.Component {
             transform: [
               {
                 rotate: this._angle.interpolate({
-                  inputRange: [-this.oneTurn, 0, this.oneTurn],
+                  inputRange: [-this.oneTurn / 1000, 0, this.oneTurn / 1000],
                   outputRange: [`-${this.oneTurn}deg`, `0deg`, `${this.oneTurn}deg`]
                 })
               },
-
             ],
             backgroundColor,
             width: width - 20,
@@ -263,8 +274,8 @@ class WheelOfFortune extends React.Component {
     // [0, this.numberOfSegments]
     const YOLO = Animated.modulo(
       Animated.divide(
-        Animated.modulo(Animated.subtract(this._angle, this.angleOffset), this.oneTurn),
-        new Animated.Value(this.angleBySegment)
+        Animated.modulo(Animated.subtract(this._angle, (this.angleOffset / 1000)), (this.oneTurn / 1000)),
+        new Animated.Value((this.angleBySegment / 1000))
       ),
       1
     );
