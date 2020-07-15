@@ -29,8 +29,6 @@ const { width, height } = Dimensions.get('screen');
 
 
 class WheelOfFortune extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -62,8 +60,6 @@ class WheelOfFortune extends React.Component {
 
   }
 
-  willreve
-
   getSnapshotBeforeUpdate = (prevProps, prevState) => {
     this.Rewards = prevProps.rewards;
 
@@ -71,7 +67,13 @@ class WheelOfFortune extends React.Component {
 
     this.numberOfSegments = this.RewardCount;
 
+    this.angleBySegment = this.oneTurn / this.numberOfSegments;
+
+    this.angleOffset = this.angleBySegment / 2;
+
     this.winner = prevProps.winner ? prevProps.winner : Math.floor(Math.random() * this.numberOfSegments);
+
+    this._wheelPaths = this.makeWheel();
 
     return null;
   }
@@ -175,8 +177,6 @@ class WheelOfFortune extends React.Component {
     )
   }
 
-
-
   _renderSvgWheel = () => {
     const { textColor, borderColor, borderWidth, backgroundColor } = this.props;
 
@@ -257,7 +257,6 @@ class WheelOfFortune extends React.Component {
       </View>
     );
   };
-
 
   _renderKnob = () => {
     const { knobSize, knoobSource } = this.props;
