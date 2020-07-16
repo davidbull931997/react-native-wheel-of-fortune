@@ -114,7 +114,7 @@ class WheelOfFortune extends React.Component {
     });
   };
 
-  _getwinnerIndex = () => {
+  getwinnerIndex = () => {
     const deg = Math.abs(Math.round(this.angle % this.oneTurn));
     // wheel turning counterclockwise
     if (this.angle < 0) {
@@ -125,7 +125,7 @@ class WheelOfFortune extends React.Component {
 
   };
 
-  _onPress = () => {
+  onPress = () => {
 
     const { duration } = this.props;
 
@@ -152,7 +152,7 @@ class WheelOfFortune extends React.Component {
       duration,
       useNativeDriver: true
     }).start(() => {
-      const winnerIndex = this._getwinnerIndex();
+      const winnerIndex = this.getwinnerIndex();
       this.setState({
         finished: true,
         winner: this._wheelPaths[winnerIndex].value
@@ -162,7 +162,7 @@ class WheelOfFortune extends React.Component {
 
   };
 
-  _textRender = (x, y, value, size, i) => {
+  textRender = (x, y, value, size, i) => {
     const { textColor } = this.props;
 
     return (
@@ -189,12 +189,12 @@ class WheelOfFortune extends React.Component {
     )
   }
 
-  _renderSvgWheel = () => {
+  renderSvgWheel = () => {
     const { textColor, borderColor, borderWidth, backgroundColor } = this.props;
 
     return (
       <View style={styles.container}>
-        {this._renderKnob()}
+        {this.renderKnob()}
         <Animated.View
           style={{
             alignItems: 'center',
@@ -269,7 +269,7 @@ class WheelOfFortune extends React.Component {
     );
   };
 
-  _renderKnob = () => {
+  renderKnob = () => {
     const { knobSize, knoobSource } = this.props;
     // [0, this.numberOfSegments]
     const YOLO = Animated.modulo(
@@ -319,14 +319,14 @@ class WheelOfFortune extends React.Component {
       const { startText } = this.props;
       if (this.props.playButton) {
         return (
-          <TouchableOpacity onPress={() => this._onPress()}>
+          <TouchableOpacity onPress={this.onPress}>
             {this.props.playButton()}
           </TouchableOpacity>
         );
       } else {
         return (
           <View style={styles.modal}>
-            <TouchableOpacity onPress={() => this._onPress()}>
+            <TouchableOpacity onPress={this.onPress}>
               <RNText style={styles.startText}>{startText}</RNText>
             </TouchableOpacity>
           </View>
@@ -340,11 +340,11 @@ class WheelOfFortune extends React.Component {
       <View style={styles.container}>
 
         { /** SVG WHEEL  */}
-        <View style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }} onPress={this.onPress}>
           <Animated.View style={[styles.content, { padding: 10 }]}>
-            {this._renderSvgWheel()}
+            {this.renderSvgWheel()}
           </Animated.View>
-        </View>
+        </TouchableOpacity>
 
       </View>
     );
