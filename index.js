@@ -54,33 +54,33 @@ class WheelOfFortune extends React.Component {
     this.angleOffset = this.angleBySegment / 2;
     this.winner = this.props.winner ? this.props.winner : Math.floor(Math.random() * this.numberOfSegments);
 
-    this._wheelPaths = this.makeWheel();
+    this.wheelPaths = this.makeWheel();
     this._angle = new Animated.Value(0);
     this.angle = 0;
 
   }
 
-  // getSnapshotBeforeUpdate = (prevProps, prevState) => {
-  //   this.Rewards = prevProps.rewards;
+  getSnapshotBeforeUpdate = (prevProps, prevState) => {
+    this.Rewards = prevProps.rewards;
 
-  //   this.RewardCount = this.Rewards.length;
+    this.RewardCount = this.Rewards.length;
 
-  //   this.numberOfSegments = this.RewardCount;
+    this.numberOfSegments = this.RewardCount;
 
-  //   this.angleBySegment = this.oneTurn / this.numberOfSegments;
+    this.angleBySegment = this.oneTurn / this.numberOfSegments;
 
-  //   this.angleOffset = this.angleBySegment / 2;
+    this.angleOffset = this.angleBySegment / 2;
 
-  //   this.winner = prevProps.winner ? prevProps.winner : Math.floor(Math.random() * this.numberOfSegments);
+    this.winner = prevProps.winner || this.winner;
 
-  //   this._wheelPaths = this.makeWheel();
+    this.wheelPaths = this.makeWheel();
 
-  //   return null;
-  // }
+    return null;
+  }
 
-  // componentDidUpdate = (prevProps, prevState, snapshot) => {
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
 
-  // }
+  }
 
   componentDidMount() {
     this._angle.addListener(event => {
@@ -155,9 +155,9 @@ class WheelOfFortune extends React.Component {
       const winnerIndex = this.getwinnerIndex();
       this.setState({
         finished: true,
-        winner: this._wheelPaths[winnerIndex].value
+        winner: this.wheelPaths[winnerIndex].value
       });
-      this.props.getWinner(this._wheelPaths[winnerIndex].value, winnerIndex)
+      this.props.getWinner(this.wheelPaths[winnerIndex].value, winnerIndex)
     });
 
   };
@@ -225,7 +225,7 @@ class WheelOfFortune extends React.Component {
           >
 
             <G y={width / 2} x={width / 2}>
-              {this._wheelPaths.map((arc, i) => {
+              {this.wheelPaths.map((arc, i) => {
                 const [x, y] = arc.centroid;
                 const number = arc.value.toString();
 
