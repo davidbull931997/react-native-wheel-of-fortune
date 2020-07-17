@@ -92,8 +92,8 @@ class WheelOfFortune extends React.Component {
         });
       }
 
-      const currentIndex = Math.floor(this.angle / this.angleBySegment);
-      const nextIndex = Math.floor(event.value / this.angleBySegment);
+      const currentIndex = Math.floor((this.angle * 1000) / this.angleBySegment);
+      const nextIndex = Math.floor((event.value * 1000) / this.angleBySegment);
 
       if (nextIndex !== currentIndex) {
         onChangeSegment(nextIndex);
