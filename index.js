@@ -83,6 +83,7 @@ class WheelOfFortune extends React.Component {
   }
 
   componentDidMount() {
+    const { onChangeSegment } = this.props;
     this._angle.addListener(event => {
       if (this.state.enabled) {
         this.setState({
@@ -91,8 +92,19 @@ class WheelOfFortune extends React.Component {
         });
       }
 
+      const currentIndex = Math.floor(this.angle / this.angleBySegment);
+      const nextIndex = Math.floor(event.value / this.angleBySegment);
+
+      if (nextIndex !== currentIndex) {
+        onChangeSegment(nextIndex);
+      }
+
       this.angle = event.value;
     });
+  }
+
+  componentWillUnmount = () => {
+    this._angle.removeAllListeners();
   }
 
   makeWheel = () => {
@@ -365,6 +377,7 @@ WheelOfFortune.propTypes = {
   knoobSource: PropTypes.number,
   innerRadius: PropTypes.number,
   playButton: PropTypes.func,
+  onChangeSegment: PropTypes.func,
   startText: PropTypes.string,
 }
 
@@ -380,6 +393,7 @@ WheelOfFortune.defaultProps = {
   playButton: null,
   startText: 'TAPTOPLAY',
   innerRadius: 100,
+  onChangeSegment: () => null,
   colors: ['#E07026', '#E8C22E', '#ABC937', '#4F991D', '#22AFD3', '#5858D0', '#7B48C8', '#D843B9', '#E23B80', '#D82B2B'],
 };
 
