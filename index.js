@@ -83,7 +83,7 @@ class WheelOfFortune extends React.Component {
   }
 
   componentDidMount() {
-    const { onChangeSegment } = this.props;
+    const { rewards, onChangeSegment } = this.props;
     this._angle.addListener(event => {
       if (this.state.enabled) {
         this.setState({
@@ -92,11 +92,18 @@ class WheelOfFortune extends React.Component {
         });
       }
 
-      const currentIndex = Math.floor((this.angle * 1000) / this.angleBySegment);
-      const nextIndex = Math.floor((event.value * 1000) / this.angleBySegment);
+      const currentSegmentIndex = Math.floor((this.angle * 1000) / this.angleBySegment);
 
-      if (nextIndex !== currentIndex) {
-        onChangeSegment(nextIndex);
+      let nextSegmentIndex = Math.floor((event.value * 1000) / this.angleBySegment);
+
+      if (nextSegmentIndex !== currentSegmentIndex) {
+        const lastSegmentIndex = rewards.length - 1;
+
+        if (nextSegmentIndex > lastSegmentIndex) {
+          nextSegmentIndex = nextSegmentIndex % lastSegmentIndex;
+        }
+
+        onChangeSegment(nextSegmentIndex);
       }
 
       this.angle = event.value;
