@@ -126,7 +126,7 @@ class WheelOfFortune extends React.Component {
     });
   };
 
-  getwinnerIndex = () => {
+  getWinnerIndex = () => {
     const deg = Math.abs(Math.round(this.angle % this.oneTurn));
     // wheel turning counterclockwise
     if (this.angle < 0) {
@@ -164,7 +164,7 @@ class WheelOfFortune extends React.Component {
       duration,
       useNativeDriver: true
     }).start(() => {
-      const winnerIndex = this.getwinnerIndex();
+      const winnerIndex = this.getWinnerIndex();
       this.setState({
         finished: true,
         winner: this.wheelPaths[winnerIndex].value
@@ -172,33 +172,6 @@ class WheelOfFortune extends React.Component {
       this.props.getWinner(this.wheelPaths[winnerIndex].value, winnerIndex)
     });
 
-  };
-
-  textRender = (x, y, value, size, i) => {
-    const { textColor } = this.props;
-
-    return (
-      <SvgText
-        x={x}
-        y={y - 70}
-        fill={textColor}
-        textAnchor="middle"
-        fontSize={this.fontSize}
-      >
-        {Array.from({ length: number.length }).map((_, j) => {
-          return (
-            <TSpan
-              x={x}
-              dy={this.fontSize}
-              key={`arc-${i}-slice-${j}`}
-            >
-
-              {number.charAt(j)}
-            </TSpan>
-          );
-        })}
-      </SvgText>
-    )
   }
 
   renderSvgWheel = () => {
@@ -257,7 +230,7 @@ class WheelOfFortune extends React.Component {
                         textAnchor="middle"
                         fontSize={this.fontSize}
                       >
-                        {Array.from({ length: number.length }).map((_, j) => {
+                        {/* {Array.from({ length: number.length }).map((_, j) => {
                           return (
                             <TSpan
                               x={x}
@@ -268,7 +241,8 @@ class WheelOfFortune extends React.Component {
                               {number.charAt(j)}
                             </TSpan>
                           );
-                        })}
+                        })} */}
+                        <TSpan x={x} dy={this.fontSize}>{number}</TSpan>
                       </SvgText>
                     </G>
                   </G>
