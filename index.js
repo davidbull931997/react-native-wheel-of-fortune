@@ -134,7 +134,7 @@ class WheelOfFortune extends React.Component {
   };
 
   getWinnerIndex = () => {
-    const deg = Math.abs(Math.round(this.angle % this.oneTurn));
+    const deg = Math.abs(Math.round(this.angle * 1000 % this.oneTurn));
     // wheel turning counterclockwise
     if (this.angle < 0) {
       return Math.floor(deg / this.angleBySegment);
