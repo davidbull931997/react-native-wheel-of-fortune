@@ -31,6 +31,9 @@ const { width, height } = Dimensions.get('screen');
 class WheelOfFortune extends React.Component {
   constructor(props) {
     super(props);
+
+    const { rewards, winner } = props;
+
     this.state = {
       enabled: false,
       started: false,
@@ -44,7 +47,7 @@ class WheelOfFortune extends React.Component {
 
 
 
-    this.Rewards = this.props.rewards;
+    this.Rewards = rewards;
     this.RewardCount = this.Rewards.length
 
     this.numberOfSegments = this.RewardCount;
@@ -52,7 +55,11 @@ class WheelOfFortune extends React.Component {
     this.oneTurn = 360;
     this.angleBySegment = this.oneTurn / this.numberOfSegments;
     this.angleOffset = this.angleBySegment / 2;
-    this.winner = this.props.winner || Math.floor(Math.random() * this.numberOfSegments);
+    this.winner = Math.floor(Math.random() * this.numberOfSegments);
+
+    if (typeof this.winner === 'number') {
+      this.winner = winner;
+    }
 
     this.wheelPaths = this.makeWheel();
     this._angle = new Animated.Value(0);
@@ -71,7 +78,10 @@ class WheelOfFortune extends React.Component {
 
     this.angleOffset = this.angleBySegment / 2;
 
-    this.winner = prevProps.winner || this.winner;
+    // this.winner = prevProps.winner || this.winner;
+    if (typeof prevProps.winner === 'number') {
+      this.winner = prevProps.winner;
+    }
 
     this.wheelPaths = this.makeWheel();
 
@@ -156,7 +166,11 @@ class WheelOfFortune extends React.Component {
 
     const totalDeg = 360 * durationAsSecond;
 
-    this.winner = winner || Math.floor(Math.random() * this.numberOfSegments);
+    this.winner = Math.floor(Math.random() * this.numberOfSegments);
+
+    if (typeof winner === 'number') {
+      this.winner = winner;
+    }
 
     const winnerDeg = this.winner * degPerSegment;
 
