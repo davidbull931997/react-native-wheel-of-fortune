@@ -52,7 +52,7 @@ class WheelOfFortune extends React.Component {
     this.oneTurn = 360;
     this.angleBySegment = this.oneTurn / this.numberOfSegments;
     this.angleOffset = this.angleBySegment / 2;
-    this.winner = this.props.winner ? this.props.winner : Math.floor(Math.random() * this.numberOfSegments);
+    this.winner = this.props.winner || Math.floor(Math.random() * this.numberOfSegments);
 
     this.wheelPaths = this.makeWheel();
     this._angle = new Animated.Value(0);
@@ -146,7 +146,7 @@ class WheelOfFortune extends React.Component {
 
   onPress = () => {
 
-    const { duration } = this.props;
+    const { duration, winner } = this.props;
 
     this.setState({ started: true });
 
@@ -156,7 +156,7 @@ class WheelOfFortune extends React.Component {
 
     const totalDeg = 360 * durationAsSecond;
 
-    this.winner = Math.floor(Math.random() * this.numberOfSegments);
+    this.winner = winner || Math.floor(Math.random() * this.numberOfSegments);
 
     const winnerDeg = this.winner * degPerSegment;
 
