@@ -249,7 +249,7 @@ class WheelOfFortune extends React.Component {
                             </TSpan>
                           );
                         })} */}
-                        <TSpan x={x} dy={this.fontSize}>{number}</TSpan>
+                        <TSpan x={x - 50} dy={this.fontSize} inlineSize={100} >{number}</TSpan>
                       </SvgText>
                     </G>
                   </G>
