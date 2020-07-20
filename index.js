@@ -155,16 +155,15 @@ class WheelOfFortune extends React.Component {
   };
 
   onPress = () => {
-
     const { duration, winner } = this.props;
 
     this.setState({ started: true });
 
-    const durationAsSecond = duration / 1000;
+    const seconds = duration / 1000;
 
     const degPerSegment = (this.oneTurn / this.numberOfSegments);
 
-    const totalDeg = 360 * durationAsSecond;
+    const nextTenTurnDeg = 360 * seconds;
 
     this.winner = Math.floor(Math.random() * this.numberOfSegments);
 
@@ -174,11 +173,15 @@ class WheelOfFortune extends React.Component {
 
     const winnerDeg = this.winner * degPerSegment;
 
-    let toValue = 365 - winnerDeg + totalDeg;
+    let currentTurnDeg = this._angle._value * 1000;
+
+    const surplusDeg = currentTurnDeg % 360;
+
+    currentTurnDeg -= surplusDeg;
+
+    let toValue = currentTurnDeg + nextTenTurnDeg - winnerDeg;
 
     toValue /= 1000;
-
-    toValue += this._angle._value;
 
     Animated.timing(this._angle, {
       toValue,
@@ -192,7 +195,6 @@ class WheelOfFortune extends React.Component {
       });
       this.props.getWinner(this.wheelPaths[winnerIndex].value, winnerIndex)
     });
-
   }
 
   renderSvgWheel = () => {
