@@ -55,10 +55,10 @@ class WheelOfFortune extends React.Component {
     this.oneTurn = 360;
     this.angleBySegment = this.oneTurn / this.numberOfSegments;
     this.angleOffset = this.angleBySegment / 2;
-    this.winner = Math.floor(Math.random() * this.numberOfSegments);
+    this.winner = winner;
 
-    if (typeof this.winner === 'number') {
-      this.winner = winner;
+    if (typeof this.winner !== 'number') {
+      this.winner = Math.floor(Math.random() * this.numberOfSegments);
     }
 
     this.wheelPaths = this.makeWheel();
