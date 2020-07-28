@@ -39,6 +39,7 @@ class WheelOfFortune extends React.Component {
       started: false,
       finished: false,
       winner: null,
+      spinning: false,
       gameScreen: new Animated.Value(width - 40),
       wheelOpacity: new Animated.Value(1),
       imageLeft: new Animated.Value((width / 2) - 30),
@@ -155,9 +156,13 @@ class WheelOfFortune extends React.Component {
   };
 
   onPress = () => {
+    const { spinning } = this.state;
+
+    if (spinning) return;
+
     const { duration, winner } = this.props;
 
-    this.setState({ started: true });
+    this.setState({ started: true, spinning: true });
 
     const seconds = duration / 1000;
 
@@ -191,6 +196,7 @@ class WheelOfFortune extends React.Component {
       const winnerIndex = this.getWinnerIndex();
       this.setState({
         finished: true,
+        spinning: false,
         winner: this.wheelPaths[winnerIndex].value
       });
       this.props.getWinner(this.wheelPaths[winnerIndex].value, winnerIndex)
@@ -345,11 +351,12 @@ class WheelOfFortune extends React.Component {
   }
 
   render() {
+    const { spinning } = this.state;
     return (
       <View style={styles.container}>
 
         { /** SVG WHEEL  */}
-        <TouchableOpacity style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }} onPress={this.onPress}>
+        <TouchableOpacity disabled={spinning} style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }} onPress={this.onPress}>
           <Animated.View style={[styles.content, { padding: 10 }]}>
             {this.renderSvgWheel()}
           </Animated.View>
