@@ -352,11 +352,14 @@ class WheelOfFortune extends React.Component {
 
   render() {
     const { spinning } = this.state;
+
+    const disabled = spinning || this.props.disabled;
+
     return (
       <View style={styles.container}>
 
         { /** SVG WHEEL  */}
-        <TouchableOpacity disabled={spinning} style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }} onPress={this.onPress}>
+        <TouchableOpacity disabled={disabled} style={{ position: 'absolute', width: width, height: height / 2, justifyContent: 'center', alignItems: 'center' }} onPress={this.onPress}>
           <Animated.View style={[styles.content, { padding: 10 }]}>
             {this.renderSvgWheel()}
           </Animated.View>
