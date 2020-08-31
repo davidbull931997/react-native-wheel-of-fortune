@@ -16,7 +16,7 @@ import Svg, {
   Text as SvgText,
   TSpan,
   Path,
-  // Image,
+  Image,
   // Circle,
   // ClipPath,
   // Defs
@@ -242,7 +242,6 @@ class WheelOfFortune extends React.Component {
               {this.wheelPaths.map((arc, i) => {
                 const [x, y] = arc.centroid;
                 const number = arc.value.toString();
-
                 return (
                   <G key={`arc-${i}`}>
 
@@ -251,7 +250,7 @@ class WheelOfFortune extends React.Component {
                       rotation={(i * this.oneTurn) / this.numberOfSegments + this.angleOffset}
                       origin={`${x}, ${y}`}
                     >
-
+                      {/* 
                       <SvgText
                         x={x}
                         y={y - 50}
@@ -259,20 +258,18 @@ class WheelOfFortune extends React.Component {
                         textAnchor="middle"
                         fontSize={this.fontSize}
                       >
-                        {/* {Array.from({ length: number.length }).map((_, j) => {
-                          return (
-                            <TSpan
-                              x={x}
-                              dy={this.fontSize}
-                              key={`arc-${i}-slice-${j}`}
-                            >
-
-                              {number.charAt(j)}
-                            </TSpan>
-                          );
-                        })} */}
                         <TSpan x={x - 50} y={y - 40} inlineSize={100} >{number}</TSpan>
-                      </SvgText>
+                      </SvgText> */}
+
+                      <Image
+                        x={x - 50}
+                        y={y - 50}
+                        width={100}
+                        height={100}
+                        // preserveAspectRatio="xMidYMid slice"
+                        href={{ uri: number }}
+                        // clipPath="url(#clip)"
+                      />
                     </G>
                   </G>
                 );
